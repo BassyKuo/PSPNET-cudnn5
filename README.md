@@ -1,4 +1,4 @@
-## Pyramid Scene Parsing Network `(support cuDNN v.5)`
+## Pyramid Scene Parsing Network `(support CUDA 8.0 and cuDNN v.5)`
 
 by Hengshuang Zhao, Jianping Shi, Xiaojuan Qi, Xiaogang Wang, Jiaya Jia, details are in [project page](https://hszhao.github.io/projects/pspnet/index.html).
 
@@ -6,17 +6,20 @@ by Hengshuang Zhao, Jianping Shi, Xiaojuan Qi, Xiaogang Wang, Jiaya Jia, details
 
 This repository is for '[Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)', which ranked 1st place in [ImageNet Scene Parsing Challenge 2016](http://image-net.org/challenges/LSVRC/2016/results). The code is modified from Caffe version of [hszhao](https://github.com/hszhao/PSPNet) and [DeepLab v2](https://github.com/xmyqsh/deeplab-v2) which support `cuDNN v.5`.
 
-There is still something wrong in `make runtest` `evaluation` `python` `matlab` `examples` `docs` etc. parts. You can skip them, or try to change into `cuDNN v.5` version by yourself.
+There is still something wrong in `make runtest` `evaluation` `python` `matlab` `examples` `docs` ... parts. You can skip them, or try to modify them by yourself.
 
 ### Installation
 
 * Unbuntu 16.04
 * CUDA 8.0
 * cuDNN v.5
-* Anaconda3 
 * other dependency packages 
-	- if `anaconda/bin` in your `$PATH`, you can install packages by `conda`. For example, 
+	- if you have Anaconda and `${anaconda_home}/bin` in `$PATH`, you can install the missing package by `conda`. 
+	  For example, 
 	  ```shell
+	  # check your PATH
+	  echo $PATH
+	  # install packages
 	  conda install opencv openssl libgcc -y
 	  ```
 
@@ -32,7 +35,7 @@ The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0
 	git clone https://github.com/BassyKuo/PSPNET-cudnn5.git
 	```
 
-2. Build Caffe and matcaffe:
+2. Build Caffe:
 
 	```shell
 	cd $PSPNET_DIR
@@ -45,8 +48,14 @@ The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0
 	make all -j32
 	make install -j32
 
-	# If you need python interface, add the PSPNET path to the `PYTHONPATH`
-	export PYTHONPATH=${PSPNET_DIR}/caffe/python:${PYTHONPATH}
+	# If you need the python interface, add the PSPNET path to the `PYTHONPATH`
+	export PYTHONPATH=${PSPNET_DIR}/python:${PYTHONPATH}
+	```
+
+	Check it is installed successfully or not.
+	```shell
+	$ python -c "import caffe; print caffe.__version__"
+	1.0.0-rc3
 	```
 
 ## Citation
