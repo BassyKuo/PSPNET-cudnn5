@@ -58,6 +58,10 @@ The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0
 	1.0.0-rc3
 	```
 
+### Errors or Problems
+
+If you got troublue when building caffe, you can check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find some solutions.
+
 ## Citation
 
 If PSPNet is useful for your research, please consider citing:
