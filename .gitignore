@@ -1,3 +1,6 @@
-build/
+build
+.build_*/
 *.pyc
 *.swp
+*.so
+*.pyc

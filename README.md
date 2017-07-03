@@ -10,24 +10,11 @@ There is still something wrong in `make runtest` `evaluation` `python` `matlab` 
 
 ### Installation
 
-* Unbuntu 16.04
-* CUDA 8.0
-* cuDNN v.5
-* other dependency packages 
-	- if you have Anaconda and `${anaconda_home}/bin` in `$PATH`, you can install the missing package by `conda`. 
-	  For example, 
-	  ```shell
-	  # check your PATH
-	  echo $PATH
-	  # install packages
-	  conda install opencv openssl libgcc -y
-	  ```
-
 For installation, please follow the instructions of [Caffe](https://github.com/BVLC/caffe) and [DeepLab v2](https://bitbucket.org/aquariusjay/deeplab-public-ver2). To enable cuDNN for GPU acceleration, cuDNN v.5 is needed. If you meet error related with 'matio', please download and install [matio](https://sourceforge.net/projects/matio/files/matio/1.5.2) as required in 'DeepLab v2'.
 
-The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0
+The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0 / cudnn v.5.
 
-### Usage
+Here is the step-by-step installation:
 
 1. Clone the repository:
 
@@ -37,30 +24,48 @@ The code has been installed successfully on Ubuntu 16.04 with CUDA 8.0
 
 2. Build Caffe:
 
+   You can build the repository by `cmake` or `makefile`.
+
+   * Using Cmake:
+
 	```shell
 	cd $PSPNET_DIR
-	cp Makefile.config.example Makefile.config
-	vim Makefile.config 
-	# uncomment configures which you need, then save the file
+	vim CMakeLists.txt
+	# modify the file if you need.
 
 	mkdir build; cd build
 	cmake .. -Wno-dev
 	make all -j32
 	make install -j32
-
-	# If you need the python interface, add the PSPNET path to the `PYTHONPATH`
-	export PYTHONPATH=${PSPNET_DIR}/python:${PYTHONPATH}
 	```
 
-	Check it is installed successfully or not.
+	* Using Makefile:
+
 	```shell
+	cd $PSPNET_DIR
+	cp Makefile.config.example Makefile.config
+	vim Makefile.config 
+	# uncomment configures which you need, then save it.
+
+	make all -j32
+	make install -j32
+	```
+
+3. Check if the installation is successful or not :
+
+	```shell
+	# Using python interface, install pycaffe and add the PSPNET path to `PYTHONPATH`
+	make pycaffe
+	export PYTHONPATH=${PSPNET_DIR}/python:${PYTHONPATH}
+
+	# Import the package for testing
 	$ python -c "import caffe; print caffe.__version__"
 	1.0.0-rc3
 	```
 
-### Errors or Problems
+### Errors
 
-If you got troublue when building caffe, you can check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find some solutions.
+If you got troublue when building caffe, check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find solutions.
 
 ## Citation
 
