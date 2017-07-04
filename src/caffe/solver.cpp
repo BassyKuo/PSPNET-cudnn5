@@ -311,7 +311,7 @@ void Solver<Dtype>::Solve(const char* resume_file) {
   if (param_.display() && iter_ % param_.display() == 0) {
     int average_loss = this->param_.average_loss();
     Dtype loss;
-    net_->ForwardPrefilled(&loss);
+    net_->Forward(&loss);
 
     UpdateSmoothedLoss(loss, start_iter, average_loss);
 
