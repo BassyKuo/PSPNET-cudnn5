@@ -4,5 +4,8 @@ build
 *.swp
 *.so
 *.pyc
+*.mex
 
-screenlog*
+*screenlog*
+evaluation/model/*
+!evaluation/model/
