@@ -1,0 +1,4 @@
+list/
+mc_result/
+octave-workspace
+*.log

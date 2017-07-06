@@ -13,8 +13,8 @@ switch data_name
     case 'ADE20K'
         isVal = true; %evaluation on valset
         step = 500; %equals to number of images divide num of GPUs in testing e.g. 500=2000/4
-        data_root = '/data2/hszhao/dataset/ADEChallengeData2016'; %root path of dataset
-        eval_list = 'list/ADE20K_val.txt'; %evaluation list, refer to lists in folder 'samplelist'
+        data_root = '/data/ADEChallengeData2016'; %root path of dataset
+        eval_list = 'list/ADE20K_val.txt'; %evaluation list, refer to lists in folder 'samplelist' (file path: ${data_root}/${eval_list})
         save_root = 'mc_result/ADE20K/val/pspnet50_473/'; %root path to store the result image
         model_weights = 'model/pspnet50_ADE20K.caffemodel';
         model_deploy = 'prototxt/pspnet50_ADE20K_473.prototxt';
@@ -26,7 +26,7 @@ switch data_name
     case 'VOC2012'
         isVal = false; %evaluation on testset
         step = 364; %364=1456/4
-        data_root = '/data2/hszhao/dataset/VOC2012';
+        data_root = '/data/VOC2012';
         eval_list = 'list/VOC2012_test.txt';
         save_root = 'mc_result/VOC2012/test/pspnet101_473/';
         model_weights = 'model/pspnet101_VOC2012.caffemodel';
@@ -39,7 +39,7 @@ switch data_name
     case 'cityscapes'
         isVal = true;
         step = 125; %125=500/4
-        data_root = '/data2/hszhao/dataset/cityscapes';
+        data_root = '/data/cityscapes';
         eval_list = 'list/cityscapes_val.txt';
         save_root = 'mc_result/cityscapes/val/pspnet101_713/';
         model_weights = 'model/pspnet101_cityscapes.caffemodel';
@@ -61,8 +61,8 @@ mean_r = 123.68; %means to be subtracted and the given values are used in our tr
 mean_g = 116.779;
 mean_b = 103.939;
 
-acc = double.empty;
-iou = double.empty;
+acc = double([]);	%acc = double.empty;
+iou = double([]);	%iou = double.empty;
 gpu_id_array = [0:3]; %multi-GPUs for parfor testing, if number of GPUs is changed, remember to change the variable 'step'
 runID = 1;
 gpu_num = size(gpu_id_array,2);
