@@ -1,14 +1,15 @@
-## Pyramid Scene Parsing Network `(support CUDA 8.0 and cuDNN v.5)`
+# Pyramid Scene Parsing Network 
+> _support CUDA 8.0 and cuDNN v.5_
 
 by Hengshuang Zhao, Jianping Shi, Xiaojuan Qi, Xiaogang Wang, Jiaya Jia, details are in [project page](https://hszhao.github.io/projects/pspnet/index.html).
 
-### Introduction
+## Introduction
 
-This repository is for '[Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)', which ranked 1st place in [ImageNet Scene Parsing Challenge 2016](http://image-net.org/challenges/LSVRC/2016/results). The code is modified from Caffe version of [hszhao](https://github.com/hszhao/PSPNet) and [DeepLab v2](https://github.com/xmyqsh/deeplab-v2) which supports `cuDNN v.5`.
+This repository is for '[Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)', which ranked 1st place in [ImageNet Scene Parsing Challenge 2016](http://image-net.org/challenges/LSVRC/2016/results). The code is modified from [hszhao](https://github.com/hszhao/PSPNet) and [DeepLab v2](https://github.com/xmyqsh/deeplab-v2) which supports `cuDNN v.5`.
 
-> un-updated: `docs/` `examples/` 
+> un-updated: `docs/` `examples/`
 
-### Installation
+## Installation
 
 For installation, please follow the instructions of [Caffe](https://github.com/BVLC/caffe) and [DeepLab v2](https://bitbucket.org/aquariusjay/deeplab-public-ver2). To enable cuDNN for GPU acceleration, cuDNN v.5 is needed. If you meet error related with 'matio', please download and install [matio](https://sourceforge.net/projects/matio/files/matio/1.5.2) as required in 'DeepLab v2'.
 
@@ -75,9 +76,93 @@ Here is the installation step-by-step:
 	make all install -j32
 	make octave
 	```
+## Evaluation
+The author provides **Matlab** code to evaluate this framework. 
+Before using `evaluation`, you should download dataset and caffemodel first.
+
+* **Download dataset**
+
+  In this repository, you can use **ADE20K**, **VOC2012** and **cityscapes** dataset for evaluation. Please check your dataset path, and modify the `data_root` in [eval_all.m](https://github.com/BassyKuo/PSPNET-cudnn5/blob/master/evaluation/eval_all.m#L16)
+  
+  For example,
+  ```shell
+  $ vim evaluation/eval_all.m
+  16 -- data_root = '/data2/hszhao/dataset/ADEChallengeData2016';
+  16 ++ data_root = '/data/ADEChallengeData2016';
+  ```
+  
+   And copy list files from `samplelist` to dataset directory, for example:
+   ```shell
+   $ cd evaluation
+   $ cp samplelist/ADE20K_val.txt /data/ADEChallengeData2016/list/
+   ```
+   ---
+   ### [NOTICE]
+   
+   Make sure the ground truth exist in your dataset path. 
+   For example (fetch from [eval_acc.m](https://github.com/BassyKuo/PSPNET-cudnn5/blob/master/evaluation/eval_acc.m)):
+   
+   :o: **Correct**
+   ```matlab
+   >> data_root = '/data/ADEChallengeData2016';
+   >> eval_list = 'list/ADE20K_val.txt';
+   >> list = importdata(fullfile(data_root,eval_list))
+   list =
+      2000×1 cell array
+       'images/validation/ADE_val_00000001.jpg annotations/validation/ADE_val_00000001.png'
+      ...
+  
+   >> str = strsplit(list{1})
+   str =
+      1×2 cell array
+       'images/validation/ADE_val_00000001.jpg'    'annotations/validation/ADE_val_00000001.png'
+   
+   >> fileAnno = fullfile(pathAnno, str{2})
+   fileAnno =
+       '/data/ADEChallengeData2016/annotations/validation/ADE_val_00000001.png'
+       
+   % '/data/ADEChallengeData2016/annotations/validation/ADE_val_00000001.png' is the 
+   % segmentation ground truth image for '/data/ADEChallengeData2016/images/validation/ADE_val_00000001.jpg'
+   ```
+
+   :x: **Wrong**
+   ```matlab
+   >> data_root = '/data/VOC2012';                
+   >> eval_list = 'list/VOC2012_test.txt';
+   >> list = importdata(fullfile(data_root,eval_list))
+   list =
+      1456×1 cell array
+       '/JPEGImages/2008_000006.jpg'
+       '/JPEGImages/2008_000011.jpg'
+      ...
+   >> str = strsplit(list{1})
+   str =
+      cell
+       '/JPEGImages/2008_000006.jpg'
+   >> fileAnno = fullfile(pathAnno, str{2})
+   Index exceeds matrix dimensions.
+
+   % Fail to find `str{2}` because `str` only has 1 cell.
+   % In this case, you should not use 'list/VOC2012_test.txt' but 'list/VOC2012_train.txt' or 'list/VOC2012_val.txt'
+   % generated yourself.
+   ```
+
+* **Download caffemodels**
+
+   If you have [gdrive](https://github.com/prasmussen/gdrive), you can download caffemodels in the `evaluation/model/` folder as below:
+   ```shell
+   $ cd evaluation/model
+   $ gdrive download 0BzaU285cX7TCT1M3TmNfNjlUeEU
+   $ gdrive download 0BzaU285cX7TCNVhETE5vVUdMYk0
+   $ gdrive download 0BzaU285cX7TCN1R3QnUwQ0hoMTA
+   ```
+   or download them by WEB console:
+   * [pspnet50_ADE20K.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCN1R3QnUwQ0hoMTA)
+   * [pspnet101_VOC2012.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCNVhETE5vVUdMYk0)
+   * [pspnet101_cityscapes.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCT1M3TmNfNjlUeEU)
 
 
-### NOTICE
+## Other options for installation
 
 1. If you do not have GPU, you can build the repository with `CPU_ONLY`. For example by using `cmake`,
    ```shell
@@ -97,27 +182,7 @@ Here is the installation step-by-step:
    ++ #include </usr/local/cuda/include/cublas_v2.h> 
    ```
 
-2. Using `evaluation`, you should download dataset and caffemodel first.
-   If you have [gdrive](https://github.com/prasmussen/gdrive), you can download caffemodels in the `model` folder as below:
-   ```shell
-   $ cd evaluation/model
-   $ gdrive download 0BzaU285cX7TCT1M3TmNfNjlUeEU
-   $ gdrive download 0BzaU285cX7TCNVhETE5vVUdMYk0
-   $ gdrive download 0BzaU285cX7TCN1R3QnUwQ0hoMTA
-   ```
-   or download them by WEB console:
-   * [pspnet50_ADE20K.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCN1R3QnUwQ0hoMTA)
-   * [pspnet101_VOC2012.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCNVhETE5vVUdMYk0)
-   * [pspnet101_cityscapes.caffemodel](https://drive.google.com/open?id=0BzaU285cX7TCT1M3TmNfNjlUeEU)
-
-
-   And copy list files from `samplelist` to dataset directory, for example:
-   ```shell
-   $ cd evaluation
-   $ cp samplelist/ADE20K_val.txt /data/ADEChallengeData2016/list/
-   ```
-
-3. If you use `octave` rather than `matlab`, like me, build the repository by `cmake` wih argument `-DBUILD_matlab=ON`, and use `make octave`.
+2. If you use `octave` rather than `matlab`, like me, build the repository by `cmake` wih argument `-DBUILD_matlab=ON`, and use `make octave`.
    You will get `caffe_.mex` in your `matlab/+caffe/private/`. 
    (more information about mex-file you can see [here](https://www.gnu.org/software/octave/doc/interpreter/Getting-Started-with-Mex_002dFiles.html))
 
@@ -134,11 +199,15 @@ Here is the installation step-by-step:
    ```
    I have no idea how to fix it. If you solve this problem, please contact me. Thanks.
 
-### Errors
+## Errors
 
-If you got troublue when building caffe, check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find solutions.
+If you got some problem when building **caffe**, please check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find solutions. 
 
+If it doesn't work, or you have other problem, please open an issue then I would reply it as soon as possible.
 
+Thank you :)
+
+---
 
 ## Citation
 
