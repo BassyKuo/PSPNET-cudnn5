@@ -76,6 +76,7 @@ Here is the installation step-by-step:
 	make all install -j32
 	make octave
 	```
+	
 ## Evaluation
 The author provides **Matlab** code to evaluate this framework. 
 Before using `evaluation`, you should download dataset and caffemodel first.
@@ -197,13 +198,18 @@ Before using `evaluation`, you should download dataset and caffemodel first.
 		eval_sub at line 26 column 5
 		eval_all at line 73 column 3
    ```
-   I have no idea how to fix it. If you solve this problem, please contact me. Thanks.
+   I have not fixed the error yet. If you do, you can make a PR to help this part to be complete.
 
-## Errors
+## Errors & Solutions
 
-If you got some problem when building **caffe**, please check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#fix-hdf5-naming-problem) to find solutions. 
+Here are some method to solve the problems occurred during building.
 
-If it doesn't work, or you have other problem, please open an issue then I would reply it as soon as possible.
+1. Errors raised during the `make all install` step, check [here](https://gist.github.com/wangruohui/679b05fcd1466bb0937f#hack-cuda-to-support-gcc-5) to find solutions. 
+
+2. Errors raised when building **matcaffe** with Matlab, please check:
+   * [GCC/G++ version problem](https://github.com/BassyKuo/PSPNET-cudnn5/issues/5) 
+
+If you need any further of my help, you're always welcome to open an issue if I can do to help.
 
 Thank you :)
 
