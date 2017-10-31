@@ -208,8 +208,28 @@ Here are some method to solve the problems occurred during building.
 
 2. Errors raised when building **matcaffe** with Matlab, please check:
    * [GCC/G++ version problem](https://github.com/BassyKuo/PSPNET-cudnn5/issues/5) 
+   
+3. protobuf error:
+   * If the gcc/g++ version later than 5, you should upgrade `libprotobuf`. Please check [here](https://github.com/google/protobuf/tree/master/src) see how to reinstall `protobuf` with the new complier.
+   
+4. 'MAT' error:
+   * If the error message shown as `undefined reference to Mat_XXXX`, for example:
+   ```sh
+   make[1]: *** [examples/CMakeFiles/convert_mnist_siamese_data.dir/all] Error 2
+   make[1]: *** Waiting for unfinished jobs....
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_VarCreate'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_CreateVer'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_VarWrite'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_VarFree'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_VarReadInfo'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_Close'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_VarReadDataLinear'
+   ../lib/libcaffe.so.1.0.0-rc3: undefined reference to `Mat_Open'
 
-If you need any further of my help, you're always welcome to open an issue if I can do to help.
+   ```
+     you can check [here](https://github.com/TheLegendAli/DeepLab-Context2/issues/1#issuecomment-264710631) to solve the problem.
+
+If you need any further of my help, you're always welcome to open an issue.
 
 Thank you :)
 
